@@ -25,13 +25,23 @@ print("\n\n\nDetails:\n\nProcess Name\t\tStart Time\t\tFinish Time\t\tTurnAround
 ProcessStartTimeList = [None] * TotalProcesses
 ProcessFinishTimeList = [None] * TotalProcesses
 
+SpentTime = 0
+
 for processNumber in range(0,TotalProcesses):
     if processNumber == 0:
+        SpentTime=ProcessArrivalTimeList[0]
         ProcessStartTimeList[processNumber] = ProcessArrivalTimeList[0]
         ProcessFinishTimeList[processNumber] = ProcessStartTimeList[0]+ProcessBurstTimeList[0]
+    elif ProcessArrivalTimeList[processNumber] > SpentTime:
+        DiffrenceInTime = ProcessArrivalTimeList[processNumber] - SpentTime
+        SpentTime += DiffrenceInTime
+        ProcessStartTimeList[processNumber] = SpentTime
+        SpentTime += processBurstTimeList[processNumber]
+        ProcessFinishTimeList[processNumber] = SpentTime
     else:
-        ProcessStartTimeList[processNumber] = ProcessFinishTimeList[(processNumber-1)]
-        ProcessFinishTimeList[processNumber] = ProcessFinishTimeList[(processNumber-1)] + ProcessBurstTimeList[processNumber]
+        ProcessStartTimeList[processNumber] = SpentTime
+        SpentTime += processBurstTimeList[processNumber]
+        ProcessFinishTimeList[processNumber] = SpentTime
     TurnAroundTime = ProcessFinishTimeList[processNumber]-ProcessArrivalTimeList[processNumber]
     WaitingTime = ProcessStartTimeList[processNumber]-ProcessArrivalTimeList[processNumber]
     print ("Process # ",(processNumber+1),"\t\t   ",ProcessStartTimeList[processNumber]," \t\t\t   ",ProcessFinishTimeList[processNumber],
