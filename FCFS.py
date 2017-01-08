@@ -1,48 +1,53 @@
-﻿print ("\t\t\tFirst Come First Serve\n\n\n")
+﻿
+def FCFS(process_arrival_time_list,process_burst_time_list):
+    print("\n\n\nDetails:\n\nProcess Name\t\tStart Time\t\tFinish Time\t\tTurnAround Time\t\t Waiting Time")
 
-TotalProcesses = int (input("\tEnter Total Number of processes you have: "))
+    process_start_time_list = [None] * total_processes
+    process_finish_time_list = [None] * total_processes
 
-ProcessArrivalTimeList = [None] * TotalProcesses
-ProcessBurstTimeList = [None] * TotalProcesses
-for processNumber in range(0,TotalProcesses):
-    processArrivalTime = int (input("\tEnter Arrival time for process %d: " %(processNumber+1)))
-    processBurstTime = int (input("\tEnter Burst time for process %d: " %(processNumber+1)))
-    ProcessArrivalTimeList[processNumber] =  processArrivalTime
-    ProcessBurstTimeList[processNumber] = processBurstTime
+    spent_time = 0
 
-for index in range(0,TotalProcesses):
-    for index2 in range(0,TotalProcesses):
-        if ProcessArrivalTimeList[index] <= ProcessArrivalTimeList[index2]:
-            ArrivalTimeTemp = ProcessArrivalTimeList[index]
-            BurstTimeTemp = ProcessBurstTimeList[index]
-            ProcessArrivalTimeList[index] =  ProcessArrivalTimeList[index2]
-            ProcessBurstTimeList[index] = ProcessBurstTimeList[index2]
-            ProcessArrivalTimeList[index2] = ArrivalTimeTemp
-            ProcessBurstTimeList[index2] = BurstTimeTemp
+    for process_number in range(0,total_processes):
+        if process_number == 0:
+            spent_time=process_arrival_time_list[0]
+            process_start_time_list[process_number] = process_arrival_time_list[0]
+            process_finish_time_list[process_number] = process_start_time_list[0]+process_burst_time_list[0]
+        elif process_arrival_time_list[process_number] > spent_time:
+            diffrence_in_time = process_arrival_time_list[process_number] - spent_time
+            spent_time += diffrence_in_time
+            process_start_time_list[process_number] = spent_time
+            spent_time += process_burst_time_list[process_number]
+            process_finish_time_list[process_number] = spent_time
+        else:
+            process_start_time_list[process_number] = spent_time
+            spent_time += process_burst_time_list[process_number]
+            process_finish_time_list[process_number] = spent_time
+        turn_around_time = process_finish_time_list[process_number]-process_arrival_time_list[process_number]
+        waiting_time = process_start_time_list[process_number]-process_arrival_time_list[process_number]
+        print ("Process # ",(process_number+1),"\t\t   ",process_start_time_list[process_number]," \t\t\t   ",ProcessFinishTimeList[process_number],
+               "\t\t\t  ",turn_around_time," \t\t\t\t   ",waiting_time)
 
-print("\n\n\nDetails:\n\nProcess Name\t\tStart Time\t\tFinish Time\t\tTurnAround Time\t\t Waiting Time")
 
-ProcessStartTimeList = [None] * TotalProcesses
-ProcessFinishTimeList = [None] * TotalProcesses
+print ("\t\t\tFirst Come First Serve\n\n\n")
 
-SpentTime = 0
+total_processes = int (input("\tEnter Total Number of processes you have: "))
 
-for processNumber in range(0,TotalProcesses):
-    if processNumber == 0:
-        SpentTime=ProcessArrivalTimeList[0]
-        ProcessStartTimeList[processNumber] = ProcessArrivalTimeList[0]
-        ProcessFinishTimeList[processNumber] = ProcessStartTimeList[0]+ProcessBurstTimeList[0]
-    elif ProcessArrivalTimeList[processNumber] > SpentTime:
-        DiffrenceInTime = ProcessArrivalTimeList[processNumber] - SpentTime
-        SpentTime += DiffrenceInTime
-        ProcessStartTimeList[processNumber] = SpentTime
-        SpentTime += processBurstTimeList[processNumber]
-        ProcessFinishTimeList[processNumber] = SpentTime
-    else:
-        ProcessStartTimeList[processNumber] = SpentTime
-        SpentTime += processBurstTimeList[processNumber]
-        ProcessFinishTimeList[processNumber] = SpentTime
-    TurnAroundTime = ProcessFinishTimeList[processNumber]-ProcessArrivalTimeList[processNumber]
-    WaitingTime = ProcessStartTimeList[processNumber]-ProcessArrivalTimeList[processNumber]
-    print ("Process # ",(processNumber+1),"\t\t   ",ProcessStartTimeList[processNumber]," \t\t\t   ",ProcessFinishTimeList[processNumber],
-           "\t\t\t  ",TurnAroundTime," \t\t\t\t   ",WaitingTime)
+process_arrival_time_list = [None] * total_processes
+process_burst_time_list = [None] * total_processes
+for process_number in range(0,total_processes):
+    process_arrival_time = int (input("\tEnter Arrival time for process %d: " %(process_number+1)))
+    process_burst_time = int (input("\tEnter Burst time for process %d: " %(process_number+1)))
+    process_arrival_time_list[process_number] =  process_arrival_time
+    process_burst_time_list[process_number] = process_burst_time
+    _
+for index in range(0,total_processes):
+    for index2 in range(0,total_processes):
+        if process_arrival_time_list[index] <= process_arrival_time_list[index2]:
+            arrival_time_temp = process_arrival_time_list[index]
+            burst_time_temp = process_burst_time_list[index]
+            process_arrival_time_list[index] =  process_arrival_time_list[index2]
+            process_burst_time_list[index] = process_burst_time_list[index2]
+            process_arrival_time_list[index2] = arrival_time_temp
+            process_burst_time_list[index2] = burst_time_temp
+
+FCFS(process_arrival_time_list,process_burst_time_list)

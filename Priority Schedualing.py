@@ -1,71 +1,64 @@
+﻿def priority_schedualling(process_arrival_time_list,process_burst_time_list,process_priority_list):
+    print("\n\n\nDetails:\n\n Process Name \t\t  Priority \t\t Start Time\t\tFinish Time\t\tTurnAround Time\t\t Waiting Time")
+
+    process_start_time_list = [None] * total_processes
+    process_finish_time_list = [None] * total_processes
+
+    for process_number in range(0,total_processes):
+        if process_number == 0:
+            process_start_time_list[process_number] = process_arrival_time_list[0]
+            process_finish_time_list[process_number] = process_start_time_list[0]+process_burst_time_list[0]
+        else:
+            process_start_time_list[process_number] = process_finish_time_list[(process_number-1)]
+            process_finish_time_list[process_number] = process_finish_time_list[(process_number-1)] + process_burst_time_list[process_number]
+        turnAround_time = process_finish_time_list[process_number] - process_arrival_time_list[process_number]
+        waiting_time = process_start_time_list[process_number] - process_arrival_time_list[process_number]
+        print ("Process # ",(process_number+1),"\t\t ",(process_priority_list[process_number]),"\t\t   ",process_start_time_list[process_number]," \t\t\t   ",process_finish_time_list[process_number],
+               "\t\t\t  ",turnAround_time," \t\t\t\t   ",waiting_time)
+
 print ("\t\t\tPriority Scheduling\n\n\n")
 
-TotalProcesses = int (input("\tEnter Total Number of processes you have: "))
+total_processes = int (input("\tEnter Total Number of processes you have: "))
 
-ProcessArrivalTimeList = [None] * TotalProcesses
-ProcessBurstTimeList = [None] * TotalProcesses
-ProcessPriorityList = [None] * TotalProcesses
-for processNumber in range(0,TotalProcesses):
-    processArrivalTime = int (input("\tEnter Arrival time for process %d: " %(processNumber+1)))
-    processBurstTime = int (input("\tEnter Burst time for process %d: " %(processNumber+1)))
-    processPriority = int (input("\tEnter Priority for Process %d: " %(processNumber+1)))
-    ProcessArrivalTimeList[processNumber] =  processArrivalTime
-    ProcessBurstTimeList[processNumber] = processBurstTime
-    ProcessPriorityList[processNumber] = processPriority
+process_arrival_time_list = [None] * total_processes
+process_burst_time_list = [None] * total_processes
+process_priority_list = [None] * total_processes
+for process_number in range(0,total_processes):
+    process_arrival_time = int (input("\tEnter Arrival time for process %d: " %(process_number+1)))
+    process_burst_time = int (input("\tEnter Burst time for process %d: " %(process_number+1)))
+    process_priority = int (input("\tEnter Priority for Process %d: " %(process_number+1)))
+    process_arrival_time_list[process_number] =  process_arrival_time
+    process_burst_time_list[process_number] = process_burst_time
+    process_priority_list[process_number] = process_priority
 
-for index in range(0,TotalProcesses):
-    for index2 in range(0,TotalProcesses):
-        if ProcessArrivalTimeList[index] <= ProcessArrivalTimeList[index2]:
-            ArrivalTimeTemp = ProcessArrivalTimeList[index]
-            BurstTimeTemp = ProcessBurstTimeList[index]
-            PriorityTemp = ProcessPriorityList[index]
-            ProcessArrivalTimeList[index] =  ProcessArrivalTimeList[index2]
-            ProcessBurstTimeList[index] = ProcessBurstTimeList[index2]
-            ProcessPriorityList[index] = ProcessPriorityList[index2]
-            ProcessArrivalTimeList[index2] = ArrivalTimeTemp
-            ProcessBurstTimeList[index2] = BurstTimeTemp
-            ProcessPriorityList[index2]= PriorityTemp
+for index in range(0,total_processes):
+    for index2 in range(0,total_processes):
+        if process_arrival_time_list[index] <= process_arrival_time_list[index2]:
+            arrival_time_temp = process_arrival_time_list[index]
+            burst_time_temp = process_burst_time_list[index]
+            priority_temp = process_priority_list[index]
+            process_arrival_time_list[index] =  process_arrival_time_list[index2]
+            process_burst_time_list[index] = process_burst_time_list[index2]
+            process_priority_list[index] = process_priority_list[index2]
+            process_arrival_time_list[index2] = arrival_time_temp
+            process_burst_time_list[index2] = burst_time_temp
+            process_priority_list[index2]= priority_temp
 
-#print(ProcessArrivalTimeList)
-#print(ProcessBurstTimeList)
-#print(ProcessPriorityList)
+for process_number in range(0,total_processes):
+    sorted_process_counter = process_number + 1
+    for process_number2 in range(process_number,total_processes):
+        if(process_arrival_time_list[process_number]+process_burst_time_list[process_number])>process_arrival_time_list[process_number2]:
+            for priority_sorter in range(process_number,sorted_process_counter):
+                if process_priority_list[process_number2]<= process_priority_list[priority_sorter]:
+                    arrival_time_temp = process_arrival_time_list[process_number2]
+                    burst_time_temp = process_burst_time_list[process_number2]
+                    priority_temp = process_priority_list[process_number2]
+                    process_arrival_time_list[process_number2] = process_arrival_time_list[priority_sorter]
+                    process_burst_time_list[process_number2] = process_burst_time_list[priority_sorter]
+                    process_priority_list[process_number2] = process_priority_list[priority_sorter]
+                    process_arrival_time_list[priority_sorter] = arrival_time_temp
+                    process_burst_time_list[priority_sorter] = burst_time_temp
+                    process_priority_list[priority_sorter] = priority_temp
+            sorted_process_counter = sorted_process_counter+1
 
-#SortedProcessCounter = 1
-
-for processNumber in range(0,TotalProcesses):
-    SortedProcessCounter = processNumber + 1
-    for processNumber2 in range(processNumber,TotalProcesses):
-        if(ProcessArrivalTimeList[processNumber]+ProcessBurstTimeList[processNumber])>ProcessArrivalTimeList[processNumber2]:
-            for prioritySorter in range(processNumber,SortedProcessCounter):
-                if ProcessPriorityList[processNumber2]<= ProcessPriorityList[prioritySorter]:
-                    ArrivalTimeTemp = ProcessArrivalTimeList[processNumber2]
-                    BurstTimeTemp = ProcessBurstTimeList[processNumber2]
-                    PriorityTemp = ProcessPriorityList[processNumber2]
-                    ProcessArrivalTimeList[processNumber2] = ProcessArrivalTimeList[prioritySorter]
-                    ProcessBurstTimeList[processNumber2] = ProcessBurstTimeList[prioritySorter]
-                    ProcessPriorityList[processNumber2] = ProcessPriorityList[prioritySorter]
-                    ProcessArrivalTimeList[prioritySorter] = ArrivalTimeTemp
-                    ProcessBurstTimeList[prioritySorter] = BurstTimeTemp
-                    ProcessPriorityList[prioritySorter] = PriorityTemp
-            SortedProcessCounter = SortedProcessCounter+1
-
-#print(ProcessArrivalTimeList)
-#print(ProcessBurstTimeList)
-#print(ProcessPriorityList)
-
-print("\n\n\nDetails:\n\n Process Name \t\t  Priority \t\t Start Time\t\tFinish Time\t\tTurnAround Time\t\t Waiting Time")
-
-ProcessStartTimeList = [None] * TotalProcesses
-ProcessFinishTimeList = [None] * TotalProcesses
-
-for processNumber in range(0,TotalProcesses):
-    if processNumber == 0:
-        ProcessStartTimeList[processNumber] = ProcessArrivalTimeList[0]
-        ProcessFinishTimeList[processNumber] = ProcessStartTimeList[0]+ProcessBurstTimeList[0]
-    else:
-        ProcessStartTimeList[processNumber] = ProcessFinishTimeList[(processNumber-1)]
-        ProcessFinishTimeList[processNumber] = ProcessFinishTimeList[(processNumber-1)] + ProcessBurstTimeList[processNumber]
-    TurnAroundTime = ProcessFinishTimeList[processNumber] - ProcessArrivalTimeList[processNumber]
-    WaitingTime = ProcessStartTimeList[processNumber] - ProcessArrivalTimeList[processNumber]
-    print ("Process # ",(processNumber+1),"\t\t ",(ProcessPriorityList[processNumber]),"\t\t   ",ProcessStartTimeList[processNumber]," \t\t\t   ",ProcessFinishTimeList[processNumber],
-           "\t\t\t  ",TurnAroundTime," \t\t\t\t   ",WaitingTime)
+priority_schedualling(process_arrival_time_list,process_burst_time_list,process_priority_list)
